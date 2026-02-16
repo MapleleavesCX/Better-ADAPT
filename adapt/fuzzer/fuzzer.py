@@ -114,7 +114,8 @@ class WhiteBoxFuzzer:
     '''
 
     # Get the original properties.
-    internals, logits, gradients = self.network.predict(np.array([self.input]), get_grad=False)
+    internals, logits, gradients = self.network.predict(np.array([self.input]), get_grad=True)
+
     orig_index = np.argmax(logits)
     orig_norm = np.linalg.norm(self.input)
     self.label = self.decode(np.array([logits]))
@@ -173,7 +174,7 @@ class WhiteBoxFuzzer:
 
             # Get the properties of the generated input.
             '''这里的internals是具体神经元的激活值, logits是最终输出, gradients是梯度'''
-            internals, logits, gradients = self.network.predict(input, get_grad=False)
+            internals, logits, gradients = self.network.predict(input, get_grad=True)
 
             '''这里传入当前神经网络模型的输出进入指标，返回一个覆盖向量'''
             covered = self.metric(internals=internals, logits=logits, gradients=gradients)
